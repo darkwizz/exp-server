@@ -25,8 +25,9 @@ SECRET_KEY = 'ji6hj**hb#0e4ipw@008&wx-alc$+_rv)am3rn&2eq8ux^ujn8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',]
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
 
@@ -74,12 +75,12 @@ WSGI_APPLICATION = 'exp_server.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 
 # Password validation
