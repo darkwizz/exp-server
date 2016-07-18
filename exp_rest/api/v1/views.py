@@ -1,9 +1,12 @@
 # Create your views here.
 import requests
+from django.contrib.auth import login as auth_login
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from django.contrib.auth import logout as auth_logout
 from exp_rest.api.v1.serializers import AuthSerializer
 
 
@@ -19,18 +22,34 @@ API_REQUESTS = {
 
 @api_view(['POST'])
 def login(request):
+    if not request.user.is_anonymous():
+        auth_logout(request)
     serial = AuthSerializer(data=request.data)
     if serial.is_valid():
         token = serial.login()
         if not token:
             return Response({'detail': 'Failed to login; incorrect email or password'}, status.HTTP_400_BAD_REQUEST)
+        # auth_login(request, request.user)
         return Response({'token': token}, status.HTTP_200_OK)
     return Response({'detail': 'Invalid login data'}, status.HTTP_400_BAD_REQUEST)
 
 
+"""
+EXP logout doesn't work correctly. I can use two tokens at same time
+and one of them was used to sign_out from experience.org
+"""
+
+
 @api_view(['POST'])
 def logout(request):
-    pass
+    detail = {
+        'detail': 'Successfully logged out',
+    }
+    response = Response(detail, status.HTTP_200_OK)
+    if request.user.is_anonymous():
+        return response
+    # auth_logout(request)
+    return response
 
 
 def get_api_request_result(url, data, method):
@@ -45,6 +64,7 @@ def get_api_request_result(url, data, method):
 
 
 @api_view(['GET'])
+# @permission_classes((IsAuthenticated,))
 def get_eps(request, token):
     if not token:
         return Response({'detail': 'No access to do this'}, status.HTTP_401_UNAUTHORIZED)
@@ -55,6 +75,7 @@ def get_eps(request, token):
 
 
 @api_view(['GET'])
+# @permission_classes((IsAuthenticated,))
 def get_my_eps(request, token):
     if not token:
         return Response({'detail': 'No access to do this'}, status.HTTP_401_UNAUTHORIZED)

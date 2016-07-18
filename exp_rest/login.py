@@ -51,7 +51,11 @@ def call_needed_redirect():
         curl.setopt(pycurl.FOLLOWLOCATION, 0)
         curl.perform()
         curl.close()
-        token = links['found'].split('=')[1]
+        parts = links['found'].split('=')
+        if len(parts) > 1:
+            token = parts[1]
+        else:
+            token = parts[0]
         links['found'] = token
         pass
 
@@ -103,3 +107,7 @@ def login(email, password):
         return links['found']
     else:
         return None
+
+
+def logout():
+    pass
