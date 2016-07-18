@@ -45,9 +45,7 @@ def get_api_request_result(url, data, method):
 
 
 @api_view(['GET'])
-def get_eps(request):
-    data = request.data
-    token = data.get('access_token')
+def get_eps(request, token):
     if not token:
         return Response({'detail': 'No access to do this'}, status.HTTP_401_UNAUTHORIZED)
     result = get_api_request_result('people', {'access_token': token}, 'GET')
@@ -57,9 +55,7 @@ def get_eps(request):
 
 
 @api_view(['GET'])
-def get_my_eps(request):
-    data = request.data
-    token = data.get('access_token')
+def get_my_eps(request, token):
     if not token:
         return Response({'detail': 'No access to do this'}, status.HTTP_401_UNAUTHORIZED)
     result = get_api_request_result('people/my', {'access_token': token}, 'GET')
@@ -69,9 +65,7 @@ def get_my_eps(request):
 
 
 @api_view(['GET'])
-def get_ep(request, id):
-    data = request.data
-    token = data.get('access_token')
+def get_ep(request, id, token):
     if not token:
         return Response({'detail': 'No access to do this'}, status.HTTP_401_UNAUTHORIZED)
     result = get_api_request_result('people/' + id, {'access_token': token}, 'GET')
@@ -81,9 +75,7 @@ def get_ep(request, id):
 
 
 @api_view(['GET'])
-def get_opportunities(request):
-    data = request.data
-    token = data.get('access_token')
+def get_opportunities(request, token):
     if not token:
         return Response({'detail': 'No access to do this'}, status.HTTP_401_UNAUTHORIZED)
     result = get_api_request_result('opportunities', {'access_token': token}, 'GET')
@@ -93,9 +85,7 @@ def get_opportunities(request):
 
 
 @api_view(['GET'])
-def get_opportunity(request, id):
-    data = request.data
-    token = data.get('access_token')
+def get_opportunity(request, id, token):
     if not token:
         return Response({'detail': 'No access to do this'}, status.HTTP_401_UNAUTHORIZED)
     result = get_api_request_result('opportunities/' + id, {'access_token': token}, 'GET')
