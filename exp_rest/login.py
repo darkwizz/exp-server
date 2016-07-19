@@ -47,10 +47,14 @@ def call_needed_redirect():
         curl.setopt(pycurl.FOLLOWLOCATION, 0)
         curl.perform()
         curl.close()
+        if not links.get('token'):
+            return None
         curl = get_curl(links['token'], header_function)
         curl.setopt(pycurl.FOLLOWLOCATION, 0)
         curl.perform()
         curl.close()
+        if not links.get('found'):
+            return None
         parts = links['found'].split('=')
         if len(parts) > 1:
             token = parts[1]
@@ -90,6 +94,13 @@ def header_function(line):
 def login(email, password):
     if links.get('found'):
         links['found'] = None
+    cookies['Set-Cookie'] = []
+    if locations.get('location'):
+        locations['location'] = None
+    flags['is_post'] = True
+    if links.get('token'):
+        links['token'] = None
+
     data = (
         ('user[email]', email),
         ('user[password]', password),
