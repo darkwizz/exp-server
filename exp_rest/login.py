@@ -88,6 +88,8 @@ def header_function(line):
 
 
 def login(email, password):
+    if links.get('found'):
+        links['found'] = None
     data = (
         ('user[email]', email),
         ('user[password]', password),
